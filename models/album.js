@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     Artist_ID: DataTypes.STRING
   }, {});
   Album.associate = function(models) {
-    // associations can be defined here
+    Album.belongsTo(models.Artist);
+    Album.hasMany(models.Track);
   };
   return Album;
 };
