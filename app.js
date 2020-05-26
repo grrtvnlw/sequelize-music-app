@@ -38,6 +38,19 @@ app.post('/artists', (req, res) => {
     })
 });
 
+app.put('/artists/:id', (req, res) => {
+  db.Artist.update({
+    Artist_Name: req.body.name
+  },
+  { where: { id: req.params.id }})
+    .then(() => {
+      db.Artist.findByPk(req.params.id)
+        .then((result) => {
+        res.json(result)
+    })
+    })
+});
+
 app.delete('/artists/:id', (req, res) => {
   db.Artist.destroy({
     where: { id: req.params.id }
