@@ -11,11 +11,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require('./models');
 
 // routes
+// Home page
 app.get('/', (req, res) => {
   res.send(`<h1>Welcome to the music repo!</h1>`)
 });
 
 // Artists
+// Get all Artists
 app.get('/artists', (req, res) => {
   db.Artist.findAll()
     .then((results) => {
@@ -23,6 +25,7 @@ app.get('/artists', (req, res) => {
     })
 });
 
+// Add an Artist
 app.post('/artists', (req, res) => {
   db.Artist.create({
     Artist_Name: req.body.name
@@ -32,6 +35,7 @@ app.post('/artists', (req, res) => {
     })
 });
 
+// Uodate an Artist
 app.put('/artists/:id', (req, res) => {
   db.Artist.update({
     Artist_Name: req.body.name
@@ -45,6 +49,7 @@ app.put('/artists/:id', (req, res) => {
     })
 });
 
+// Delete an Artist
 app.delete('/artists/:id', (req, res) => {
   db.Artist.destroy({
     where: { id: req.params.id }
@@ -58,6 +63,7 @@ app.delete('/artists/:id', (req, res) => {
 });
 
 // Albums
+// Get all Albums
 app.get('/albums', (req, res) => {
   db.Album.findAll()
     .then((results) => {
@@ -65,6 +71,7 @@ app.get('/albums', (req, res) => {
     })
 });
 
+// Get all Albums by Artist
 app.get('/artists/:id/albums', (req, res) => {
   db.Artist.findByPk(req.params.id)
     .then((Artist) => {
@@ -74,6 +81,7 @@ app.get('/artists/:id/albums', (req, res) => {
     });
 });
 
+// Add an Album
 app.post('/artists/:id/albums', (req, res) => {
   db.Album.create({
     Album_Name: req.body.name,
@@ -85,6 +93,7 @@ app.post('/artists/:id/albums', (req, res) => {
     })
 });
 
+// Update an Album
 app.put('/artists/:id/albums', (req, res) => {
   db.Album.update({
     Album_Name: req.body.name,
@@ -100,6 +109,7 @@ app.put('/artists/:id/albums', (req, res) => {
     })
 });
 
+// Delete Album
 app.delete('/artists/:artist_id/albums/:album_id', (req, res) => {
   db.Album.destroy({
     where: { Artist_ID: req.params.artist_id, id: req.params.album_id }
