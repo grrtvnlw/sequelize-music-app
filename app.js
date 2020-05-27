@@ -3,10 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const albumsRouter = require('./routes/albums');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/albums', albumsRouter);
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
@@ -40,9 +42,9 @@ app.use('/users', usersRouter);
 //   res.render('error');
 // })
 
-// app.use(express.static('public'));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require('./models');
 
@@ -92,66 +94,6 @@ app.delete('/artists/:id', (req, res) => {
   })
     .then(() => {
       db.Artist.findAll()
-        .then((results) => {
-        res.json(results)
-    })
-    })
-});
-
-// Albums
-// Get all Albums
-app.get('/albums', (req, res) => {
-  db.Album.findAll()
-    .then((results) => {
-      res.json(results)
-    })
-});
-
-// Get all Albums by Artist
-app.get('/artists/:id/albums', (req, res) => {
-  db.Artist.findByPk(req.params.id)
-    .then((Artist) => {
-      return Artist.getAlbums()
-    }).then((results) => {
-      res.json(results);
-    });
-});
-
-// Add an Album
-app.post('/artists/:id/albums', (req, res) => {
-  db.Album.create({
-    Album_Name: req.body.name,
-    Year: req.body.year,
-    Artist_ID: req.params.id
-  })
-    .then((result) => {
-      res.send(result);
-    })
-});
-
-// Update an Album
-app.put('/artists/:id/albums', (req, res) => {
-  db.Album.update({
-    Album_Name: req.body.name,
-    Year: req.body.year,
-    Artist_ID: req.params.id
-  },
-  { where: { id: req.params.id }})
-    .then(() => {
-      db.Album.findByPk(req.params.id)
-        .then((result) => {
-        res.json(result)
-    })
-    })
-});
-
-// Delete Album
-app.delete('/artists/:artist_id/albums/:album_id', (req, res) => {
-  db.Album.destroy({
-    where: { Artist_ID: req.params.artist_id, id: req.params.album_id }
-  })
-    .then(() => {
-      db.Album.findAll()
         .then((results) => {
         res.json(results)
     })
