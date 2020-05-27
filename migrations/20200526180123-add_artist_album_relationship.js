@@ -18,6 +18,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('Albums', 'artist_id');
+    return queryInterface.removeColumn('Albums', 'Artist_ID');
   }
 };

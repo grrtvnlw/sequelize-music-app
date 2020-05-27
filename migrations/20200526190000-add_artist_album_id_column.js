@@ -18,7 +18,7 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.changeColumn('Tracks', 'album_id', {
+    return queryInterface.changeColumn('Tracks', 'Album_ID', {
       type: Sequelize.DataTypes.INTEGER
     });
   }

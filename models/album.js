@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     Artist_ID: DataTypes.STRING
   }, {});
   Album.associate = function(models) {
-    Album.belongsTo(models.Artist);
+    Album.belongsTo(models.Artist, { foreignKey: 'Artist_ID' });
     Album.hasMany(models.Track);
   };
   return Album;
