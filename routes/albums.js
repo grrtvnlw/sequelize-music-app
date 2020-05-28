@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 
-// Albums
 // Get all Albums
 router.get('/', function (req, res, next) {
   db.Album.findAll()

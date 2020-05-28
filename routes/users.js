@@ -4,11 +4,23 @@ const db = require('../models');
 const bcrypt = require('bcrypt');
 
 // GET users listening
-router.get('/', function (req, res, next) {
-  res.render('users.ejs');
+router.get('/signup', function (req, res, next) {
+  res.render('signup.ejs');
 });
 
-router.post('/register', (req, res) => {
+router.get('/login', function (req, res, next) {
+  res.render('login.ejs');
+});
+
+router.get('/dashboard', function (req, res, next) {
+  res.render('dashboard.ejs', {
+    title: 'My Music Repository',
+    user: req.session.user || null,
+    email: req.session.user || null,
+  });
+});
+
+router.post('/signup', (req, res) => {
   const { username, email, password } = req.body;
   bcrypt.hash(password, 10, (err, superSecretPasswordHash) => {
     db.Users.create({
@@ -16,7 +28,7 @@ router.post('/register', (req, res) => {
       email,
       password: superSecretPasswordHash,
     }).then((result) => {
-      res.redirect('/');
+      res.redirect('/users/dashboard');
     });
   });
 });
@@ -28,7 +40,9 @@ router.post('/login', (req, res) => {
     .then(Users => {
       bcrypt.compare(password, Users.password, (err, match) => {
         if (match) {
-          res.send('Logged in!');
+          // res.send('Logged in!');
+          req.session.user = Users;
+          res.redirect('/');
         } else {
           res.send('Incorrect Password');
         };
